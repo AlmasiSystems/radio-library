@@ -33,9 +33,6 @@ class My_View_Helper_CreateMenu {
                     $output .= '<a href="/' . $controller . '/">' . $title . '</a>';
                 }
             }
-            if(in_array('premiums', $controllers)){
-                $output .= '<a href="http://money.kdvs.org">Money</a>';
-            }
             
             $output .= '<a href="/archive">Archives</a>';
     		$output .= '<a href="/options">Options</a>';
