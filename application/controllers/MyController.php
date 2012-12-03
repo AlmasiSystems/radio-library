@@ -17,8 +17,8 @@ class MyController extends Zend_Controller_Action {
         $this->view->user = $auth->getIdentity();
 
 	    //commonly needed
-	    define('STATION_NAME', Zend_Registry::get('config')->application->station_name);
-	    define('STATION_MAIN_SITE', Zend_Registry::get('config')->application->station_main_site);
+	    defined('STATION_NAME') || define('STATION_NAME', Zend_Registry::get('config')->application->station_name);
+	    defined('STATION_MAIN_SITE') || define('STATION_MAIN_SITE', Zend_Registry::get('config')->application->station_main_site);
     }
     
     function preDispatch() {
