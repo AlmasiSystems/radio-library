@@ -23,7 +23,7 @@ This application has been tested under CentOS 5.8 with PHP 5.1 and MySQL 5.0.
 
 Standard LAMP installation should be applied. Copy the application into a directory such as /var/www/html/ and configure Apache to AllowOverride (or move the contents of every .htaccess into your Apache config).
 
-You will need to manual initialize the database with the scripts included in db/.
+You will need to manual initialize the database with the script included in db/. By default a user named 'admin' with password 'admin' will exist. You must change this password before deploying your site to the public.
 
 - Christopher Thielen (cthielen at gmail com)
 
