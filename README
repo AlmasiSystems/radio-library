@@ -14,6 +14,9 @@ This application is available under the MIT license.
 
 Please contribute patches and report issues at https://github.com/KDVS/radio-library/issues.
 
+Note that this application contains other projects (such as the Zend Framework and phpThumb) which are covered
+under separate licenses. Please refer to their included documentation for that information.
+
 Installation
 ------------
 This application has been tested under CentOS 5.8 with PHP 5.1 and MySQL 5.0.
