@@ -1,0 +1,33 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+				<h1><?php echo $this->title;?></h1>
+                
+		        <div id="tabs">
+		            <ul>
+		                <li style="margin-left: 1px" id="tabHeader1"><a href="/schedule/addSeason"><span>Add Season</span></a></li>
+		                <li id="tabHeader2"><a href="/schedule/editSeason"><span>Edit Season</span></a></li>
+						<li id="tabHeader3"><a href="/schedule/showtransfer"><span>Transfer Shows</span></a></li>
+		            </ul>
+		        </div><!--End of tabs-->
+		        <div id="tabscontent">
+		            <div id="tabContent1" class="tabContent" style="display: none;"></div>
+					<div id="tabContent2" class="tabContent" style="display: none;">
+						<?php if(isset($this->seasonselector) && $this->seasonselector): ?>
+							<?php echo $this->render('schedule/seasonselector.phtml'); ?>
+						<?php else: ?>
+							<?php if ($this->the_message) : ?>
+							    <div class="message"><?php echo $this->the_message; ?></div>
+							<?php endif; ?>
+						<?php endif; ?>
+						<div id="editSeasonForm"><?php echo $this->the_form; ?></div>						
+					</div>
+					<div id="tabContent3" class="tabContent" style="display: none;"></div>
+
+		        </div><!--End of tabscontent-->
+</div><!-- left -->
+<script type="text/javascript">
+    /*show first tab*/
+    toggleTab(2,3);
+</script>
+<?php echo $this->render('menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

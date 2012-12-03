@@ -1,0 +1,16 @@
+<?php echo $this->render('header.phtml'); ?>
+
+<div id="left">
+			<h1>Music Library Management</h1>
+			<h2><a href="/music/albums">Manage Albums</a></h2>
+			<p>Add albums to the library database, or edit and search for albums already added.</p><br />
+			<h2><a href="/music/labels">Manage Labels</a></h2>
+			<p>Add, edit, or search for record labels in the database. You may also merge existing labels.</p><br />
+			<h2><a href="/music/recent">Recent Adds</a></h2>
+			<p>View records added to the library in the last week/month. You can also edit entries or print labels here.</p><br />
+			<h2><a href="/music/spins">Spins Generator</a></h2>
+			<p>Tally spins from all DJ playlists in the last 7 days. All spins will be grouped<br /> (records played multiple times during a show will only be counted once).</p>
+
+</div><!-- left -->
+<?php echo $this->render('music/menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

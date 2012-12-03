@@ -1,0 +1,149 @@
+<?php echo $this->render('header.phtml'); ?>
+<?php
+Zend_Loader::loadClass('Zend_Filter_HtmlEntities');
+$f = new Zend_Filter_HtmlEntities();
+
+?>
+
+	<h1><?php echo $this->the_show['show_name']; ?></h1>
+	<div style="float: left; width: 300px">
+		
+		<h3>
+			<?php echo $this->playlist_to_view['dj_names']; ?>			
+		</h3>
+		<p>
+			<?php echo $f->filter($this->playlist_to_view['description']); ?>
+			<br /><br />
+			<strong>Genre</strong><br />
+			<?php echo $f->filter($this->createGenreList($this->the_show)); ?>
+			<br />
+			<?php if ($this->the_show['website'] != ''): ?>
+				<br /><strong>Website:</strong> 
+				<a href="<?php echo $this->the_show['website']; ?>">Click Here</a><br />
+			<?php endif; ?>
+			<?php if ($this->the_show['email'] != ''): ?>
+				<br /><strong>Email:</strong> 
+				<a href="mailto:<?php echo $this->the_show['email']; ?>"><?php echo $this->the_show['email']; ?></a>
+				<br />
+			<?php endif; ?>
+			<?php if ($this->the_m3u): ?>
+				<br /><strong>Miss the Show?</strong><br />
+				<?php echo $this->the_m3u; ?>
+			<?php endif; ?>
+			<?php if ($this->the_podcast): ?>
+				<br />
+				<?php echo $this->the_podcast; ?>
+			<?php endif; ?>			
+		</p>
+		<br />
+		<br />
+		<h3>[<a href="/shows/past/show_id/<?php echo $this->playlist_to_view['show_id']; ?>/">View Past Shows</a>]</h3>
+		<h3>[<a href="/shows/future/show_id/<?php echo $this->playlist_to_view['show_id']; ?>/">View Upcoming Shows</a>]</h3>
+
+	</div>
+	<?php if($this->playlist_to_view): ?>
+	<div style="float: right; width: 500px">
+		<div id="playlist_comments">
+			<table width="99%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<th colspan="2">Show Description for <?php echo $this->playlist_to_view['date_formatted']; ?></th>
+				</tr>
+				<tr>
+					<td><div style="padding: 5px;">
+						<?php
+							if($this->playlist_to_view['comments'] != ''){
+								echo $this->playlist_to_view['comments'];
+							} else {
+								echo '<div style="height: 100px; text-align: center;"><br /><br />No Show Description</div>';
+							}
+			
+			
+						 ?>
+					</div></td>
+					<td>
+						<?php 
+							if($this->the_image){
+								echo '<div style="text-align: right;">' . $this->the_image . '</div>';
+							}
+						?>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+	</div>
+	<?php endif; ?>
+	
+	<?php if($this->the_tracks): ?>
+	<div id="playlist">
+	<table id="playlist_tracks" border="0" cellspacing="0">
+		<tr>
+			<th>Track</th>
+			<th>Artist</th>
+			<th>Song</th>
+			<th>Album</th>
+			<th>Label</th>
+			<th>&nbsp;</th>
+			<th>&nbsp;</th>
+		</tr>
+	<?php
+			$count = 0;
+			foreach($this->the_tracks as $trk):
+				$count++;
+				if($count % 2 == 0){
+					$row_class = 'even';
+				} else {
+					$row_class = 'odd';
+				}
+	?>
+
+		<tr class="<?php echo $row_class; ?>">
+			<td>
+				<?php 
+					if(isset($trk['track_num']) && $trk['track_num']){
+						echo $trk['track_num'];
+					}
+				?>
+			</td>
+			<td>
+				<?php echo $f->filter($trk['artist_name']); ?>
+			</td>
+			<td>
+				<?php echo $f->filter($trk['song_name']); ?>
+			</td>
+			<td>
+				<?php echo $f->filter($trk['album_name']); ?>
+			</td>
+			<td>
+				<?php echo $f->filter($trk['label_name']); ?>
+			</td>
+			<td>
+				<?php echo $f->filter($trk['comments']); ?>
+			</td>
+			<td>
+			<?php 
+							
+				if(isset($trk['request']) && $trk['request']){
+					echo ' &nbsp;*request';
+				}
+				if(isset($trk['from_home']) && $trk['from_home']){
+					echo ' &nbsp;*from home';
+				}
+				if(isset($trk['current']) && $trk['current']){
+					echo ' &nbsp;*new arrival';
+				}
+			
+			?>	
+			</td>
+		</tr>	
+		<?php if(isset($trk['airbreak_after']) && $trk['airbreak_after']): ?>
+			<tr><td colspan="7"><center>-----------------------------air break-----------------------------</center></td></tr>
+		<?php endif; ?>
+		
+	
+		<?php endforeach; ?>
+		</table>
+		</div>
+	<?php endif; ?>
+
+<?php echo $this->render('footer.phtml'); ?>

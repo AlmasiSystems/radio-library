@@ -1,0 +1,20 @@
+
+<?php if ($this->the_message) : ?>
+    <div class="message"><?php echo $this->the_message; ?></div>
+<?php else: ?>
+	<div class="excerpt">
+		<h3>Access Levels</h3>
+			<b>Admin</b><br />
+			&nbsp;&nbsp + Admin Section<br />
+			&nbsp;&nbsp + All Access of Adder<br />
+			<br />
+			<b>Adder</b><br />
+			&nbsp;&nbsp + Manage Music<br />
+            &nbsp;&nbsp + All Access of DJ<br />
+            <br />			
+			<b>DJ</b><br />
+			&nbsp;&nbsp + Manage Playlists<br />
+			<br />
+	</div>
+<?php endif; ?>
+<div id="addUserForm"><?php echo $this->the_form; ?></div>

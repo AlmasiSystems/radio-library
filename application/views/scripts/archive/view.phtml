@@ -1,0 +1,55 @@
+<?php echo $this->render('header.phtml'); ?>
+
+<div id="left">
+
+	<div style="float:right;">
+	    <h2>Approx File Sizes</h2>
+	    <p> 32 kbps X 1 hour ~ 14mb</p>
+	    <p> 128 kbps X 1 hour ~ 53mb</p>
+	    <p> 192 kbps X 1 hour ~ 84mb</p>
+	    <p> 320 kbps X 1 hour ~ 140mb</p>
+	</div>
+	<h1><?php echo $this->title; ?> for <?php echo $this->the_show['show_name']; ?></h1>
+
+    <h3><a href="/archive/">Browse Shows</a></h3>
+	<br />	
+	<br />
+	<p>To download a show, right click on the mp3 bitrate you would like to download, and click 'Save as...'</p>
+	<br />
+
+	<div class="mini_playlist_list">
+		<table width="99%">
+			
+		<?php
+		 	$week_no = 0;
+			foreach($this->the_mp3s as $show):
+				$week_no++;
+				if ($week_no % 2 == 0){
+					$tr_class = 'even';
+				} else {
+					$tr_class = 'odd';
+				}
+
+		 ?>
+			<tr>
+				<td>
+					<div style="text-align: center; padding: 5px">
+					    <h3><?php echo date("F j, Y", strtotime($show['date'])); ?></h3>
+					</div>
+				<td>
+				    <?php
+				        foreach($show['mp3s'] as $br => $mp3){
+				            echo '<a href="' . $mp3 . '">'.$br. ' kbps</a>&nbsp; &nbsp;';
+			            } 
+			        ?>
+				    
+				</td>
+				
+			</tr>
+		<?php endforeach; ?>
+		</table>
+	</div>
+</div><!-- left -->
+
+<?php //echo $this->render('menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

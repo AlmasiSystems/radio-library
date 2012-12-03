@@ -1,0 +1,41 @@
+<?php if ($this->the_message) : ?>
+    <div class="message"><?php echo $this->the_message; ?></div>
+<?php endif; ?>
+<div id="addAlbum_ManualForm"><?php echo $this->the_form; ?></div>
+<script type="text/javascript" language="javascript">
+	function showLabelForm(){
+		/*$('addLabelForm').update('<div class="loading"></div>');*/
+		new Ajax.Updater('addLabelForm', '/ajax/labelAddForm', {
+							onComplete:function(){ new Effect.Highlight('addLabelForm'); },
+							onLoading: function(){$('addLabelForm').addClassName('ajax_form');},
+							evalScripts:false, /* so it doesn't shake on entry */
+	                        asynchronous:true
+	                        });
+ 
+		return false;
+	}
+
+	function submitEditLabelForm(form){
+	    new Ajax.Updater('addLabelForm', '/ajax/labelAddForm', {
+							asynchronous:true,
+							evalScripts:true,
+							onLoading: function(){ $('addLabelForm').update('<div class="loading"></div>'); }, 
+							parameters:{
+								label_name: $('label_name').value, 
+								label_website: $('label_website').value, 
+								label_email: $('label_email').value
+								}
+							});
+		return false;
+	}
+	
+	/*makes the label element an autocompleter */
+	new Ajax.Autocompleter("label_autocomplete", "label_autocomplete_choices", "/ajax/autoCompleteLabels", {
+	                        paramName: "search_term",
+	                        minChars: 2,
+	                        indicator: 'label_autocomplete_indicator', 
+	                      	updateElement: function(li){$('label_id').value = li.id; $('label_selected').value = li.title; $('label_autocomplete').value = '';}
+	                        });
+	
+
+</script>

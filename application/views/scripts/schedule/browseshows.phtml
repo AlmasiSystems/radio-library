@@ -1,0 +1,61 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+				<h1><?php echo $this->title;?></h1>
+                
+		        <div id="tabs">
+		            <ul>
+		                <li style="margin-left: 1px" id="tabHeader1"><a href="/schedule/addShow"><span>Add Show</span></a></li>
+		                <li id="tabHeader2"><a href="/schedule/editShow"><span>Edit Show</span></a></li>
+						<li id="tabHeader3"><a href="/schedule/browseShows"><span>Browse Shows</span></a></li>
+		            </ul>
+		        </div><!--End of tabs-->
+		        <div id="tabscontent">
+		            <div id="tabContent1" class="tabContent" style="display: none;"></div>
+					<div id="tabContent2" class="tabContent" style="display: none;"></div>
+					<div id="tabContent3" class="tabContent" style="display: none;">
+						<?php if(isset($this->seasonselector) && $this->seasonselector): ?>
+							<?php echo $this->render('schedule/seasonselector.phtml'); ?>
+						<?php else: ?>
+							<table id="browseShows" border="0" cellspacing="0">
+							<?php 
+								 $show_count = 0;
+								 foreach ($this->the_shows as $show){ 
+								 	$show_count++;
+									if($show_count % 2 == 0){
+										$row_class = 'even';
+									} else {
+										$row_class = 'odd';
+									}
+							?>
+								<tr class="<?php echo $row_class; ?>">
+									<td>
+										<strong><?php echo $show['show_name']; ?></strong><br />
+										<?php if($show['dj1_id']): ?>
+										    &nbsp;&nbsp;&nbsp;<?php echo $this->the_djs[$show['dj1_id']]['dj_name']; ?>
+										<?php endif; ?>
+										<?php if($show['dj2_id']): ?>
+											&nbsp;&nbsp;&nbsp;<?php echo $this->the_djs[$show['dj2_id']]['dj_name']; ?>
+										<?php endif; ?>
+										<?php if($show['dj3_id']): ?>
+											&nbsp;&nbsp;&nbsp;<?php echo $this->the_djs[$show['dj3_id']]['dj_name']; ?>
+										<?php endif; ?>
+									</td>
+									<td>
+										<?php echo $this->show_types[$show['show_type']]['description']; ?>
+									<td>
+									<td width="10">[<a href="/schedule/editShow/season_id/<?php echo $this->season_id; ?>/show_id/<?php echo $show['id']; ?>">edit</a>]</td>
+								</tr>
+							<?php } //endfor?>
+							</table>
+						<?php endif; ?>
+						
+					</div>
+
+		        </div><!--End of tabscontent-->
+</div><!-- left -->
+<script type="text/javascript">
+    /*show first tab*/
+    toggleTab(3,3);
+</script>
+<?php echo $this->render('menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

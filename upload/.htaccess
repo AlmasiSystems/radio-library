@@ -1,0 +1,6 @@
+RewriteEngine Off
+
+AuthUserFile /var/www/.htpasswd
+AuthType Basic
+AuthName "KDVS Uploads"
+Require valid-user

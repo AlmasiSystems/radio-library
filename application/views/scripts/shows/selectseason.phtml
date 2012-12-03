@@ -1,0 +1,9 @@
+<?php echo $this->render('header.phtml'); ?>
+
+<h2>Select Season to view Past Shows and Playlists</h2>				
+<?php foreach ($this->the_seasons as $s): ?>
+	<h3><a href="<?php echo $this->baseUrl . '/shows/index/season_id/'. $s['id']; ?>">
+		<?php echo $s['title']; ?></a> <?php echo ' | ' . date('F j, Y', strtotime($s['start_date'])) . ' - ' . date('F j, Y', strtotime($s['end_date'])); ?>
+	</h3>
+<?php endforeach; ?>
+<?php echo $this->render('footer.phtml'); ?>

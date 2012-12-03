@@ -1,0 +1,145 @@
+
+
+<?php if($this->results): ?>
+	
+	<div id="advanced_search_list">
+			<h3>[<a href="/search/albums/">New Advanced Search</a>]</h3>
+			<table id="search_results_list" border="0" cellspacing="0">
+				<tr class="even">
+					<th rowspan="2" valign="top">Album ID</th>
+					<?php if($this->is_adder): ?>
+						<th rowspan="2" valign="top">
+							&nbsp;
+						</th>
+					<?php endif; ?>
+					<th>
+						<strong>Artist<strong>
+					</th>
+					<th>
+						Album Title					
+					</th>
+					<th>
+						<strong>Label</strong>
+
+					</th>
+					<th>Add Date</th>
+					<th rowspan="2" valign="top">
+						Track?
+					</th>
+					<th rowspan="2" valign="top">
+						Adder
+					</th>
+					<?php if($this->is_adder): ?>
+						<th rowspan="2" valign="top">
+							&nbsp;
+						</th>
+					<?php endif; ?>
+				</tr>
+				<tr class="even">
+					<th colspan="4" style="text-align: left;">
+						Format - Genre - Promoter
+					</th>
+				</tr>
+			<?php 
+				 $count = 0;
+				 foreach ($this->results as $item){ 
+				 	$count++;
+					if($count % 2 == 0){
+						$row_class = 'even';
+					} else {
+						$row_class = 'odd';
+					}
+			?>
+
+				<tr class="<?php echo $row_class; ?>">
+					<td rowspan="2" valign="top">
+						<?php echo $item['id']; ?>
+
+						<br />
+					</td>
+					<?php if($this->is_adder): ?>
+						<td rowspan="1" valign="top">
+							[<a href="/music/editAlbum/id/<?php echo $item['id']; ?>/">edit</a>]
+						</td>
+					<?php endif; ?>
+						
+					<td>
+						<strong><?php echo $item['artist']; ?></strong>
+					</td>
+					<td>
+						<?php echo $item['title']; ?>
+					</td>
+					<td>
+						<strong><?php echo $item['label_name']; ?></strong>
+					</td>
+					<td><?php echo date('m/d/Y', strtotime($item['add_datetime'])); ?></td>
+					<td rowspan="2" valign="top">
+						<?php if(isset($item['track_con']) && $item['track_con']){ echo 'Yes';} else { echo 'No';} ?>
+					</td>
+					<td rowspan="2" valign="top">
+						<?php echo $item['adders']; ?>
+					</td>
+					<?php if($this->is_adder): ?>
+						<td rowspan="2" valign="top">
+							<?php echo $this->CreateLabelPrintButtons($item); ?>
+						</td>
+					<?php endif; ?>
+				</tr>
+				<tr class="<?php echo $row_class; ?>">
+				    <?php if($this->is_adder): ?>
+                    <td colspan="1" style="text-align: left;">
+							[<a href="javascript:deleteMe(<?php echo $item['id']; ?>, '<?php echo $item['artist']; ?> - <?php echo $item['title']; ?>')">delete</a>]
+					</td>					   
+					<?php endif; ?>
+					<td colspan="4" style="text-align: left;">
+						<?php echo $item['format'] . ' - ' . $item['genre']; ?>
+						<?php if(isset($item['promoter']) && $item['promoter'] != ''){ echo  ' - ' . $item['promoter'];} ?>
+
+					</td>
+				</tr>
+			<?php } //endfor?>
+			</table>
+			<?php if ($count >= 1000): ?>				
+				<div style="text-align: center; padding: 5px;"><strong>More than 1000 albums found so results have been truncated</strong></div>
+			
+			<?php endif; ?>
+	</div>
+<?php endif; ?>
+<?php if ($this->the_message) : ?>
+    <div class="message"><?php echo $this->the_message; ?></div>
+<?php else: ?>
+<?php echo $this->advanced_form; ?>
+<?php endif; ?>
+<script type="text/javascript" language="javascript">
+	
+	/*makes the label element an autocompleter */
+	new Ajax.Autocompleter("label_autocomplete", "label_autocomplete_choices", "/ajax/autoCompleteLabels", {
+	                        paramName: "search_term",
+	                        minChars: 2,
+	                        indicator: 'label_autocomplete_indicator', 
+	                      	updateElement: function(li){$('label_id').value = li.id; $('label_autocomplete').value = li.title;}
+	                        });
+	<?php if($this->is_adder): ?>                     
+	function deleteMe(id, title){
+
+    	var answer = confirm("Are you SURE you want to delete:\n " + title + " ?\n Make SURE!");
+    	if (answer){
+    	    var answer = confirm("Are you SUPER SURE?!?! There is no going back!");
+    	    if (answer){
+              	var url = '/ajax/deleteAlbum/';
+            	new Ajax.Request(url, {
+            	  method: 'post',
+            	  parameters: {album_id: id},
+            	  onSuccess: function(transport) {
+            		if(transport.responseText == 'OK'){
+            		    alert(title + " DELETED!!");
+            			window.location.replace( window.location.pathname );
+            		} //else errror out
+            	  }
+        	    });
+        	}
+    	}
+
+    }
+    <?php endif; ?>
+</script>

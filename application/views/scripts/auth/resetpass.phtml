@@ -1,0 +1,12 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+		<h1>Reset Password</h1>
+		<?php if ($this->the_message) : ?>
+            <div class="message"><?php echo $this->the_message; ?></div>
+        <?php else: ?>
+        <div id="resetPassForm"><?php echo $this->the_form; ?></div>	
+        <?php endif; ?>
+        
+		
+</div><!-- left -->
+<?php echo $this->render('footer.phtml'); ?>

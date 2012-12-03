@@ -1,0 +1,5 @@
+<ul>
+<?php foreach($this->users as $user): ?>
+  <li id="<?php echo $user['id']; ?>"><b><?php echo $user['username']; ?></b><br /><span class="informal"><?php echo $user['name_first'] . ' ' . $user['name_last']; ?><br /><?php echo $user['dj_name']; ?></span></li>  
+<?php endforeach; ?>
+</ul>

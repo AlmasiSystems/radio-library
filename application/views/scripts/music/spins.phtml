@@ -1,0 +1,70 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+	<h1>Spins Generator</h1>
+	<h2><?php echo $this->header_text; ?></h2>
+
+    <form method="post" action="/music/spins">
+    	<fieldset>
+    			<li>
+    			    <div class="element"><strong>Start Date: </strong><input readonly="readonly" onfocus="scwShow(scwID('start_date'),this);" id="start_date" value="<?php echo $this->start_date; ?>" name="start_date" type="text" /><span class="explanation"><img src="/public/images/cal.gif" onclick="scwShow(scwID('start_date'),this);"></span></div>
+    			    <div class="element">&nbsp;&nbsp;<strong>End Date: </strong><input readonly="readonly" onfocus="scwShow(scwID('end_date'),this);" id="end_date" value="<?php echo $this->end_date; ?>" name="end_date" type="text" /><span class="explanation"><img src="/public/images/cal.gif" onclick="scwShow(scwID('end_date'),this);"></span></div>
+    			    <div class="element"><input type="submit" value="Go"></div>
+    			</li>
+
+    			<li><br /></li>
+    		
+    		</ol>
+    	</fieldset>
+    </form>
+	<div id="spins_list">
+		<table id="browseLabels" border="0" cellspacing="0">
+			<tr class="even">
+				<th>
+					<strong>#<strong>
+				</th>
+				<th>ID</th>
+				<th><strong>Artist</strong></th>
+				<th><strong>Album</strong></th>
+				<th><strong>Label</strong></th>
+			</tr>
+		<?php 
+			 $count = 0;
+			 foreach ($this->the_spins as $album){ 
+			 	$count++;
+				if($count % 2 == 0){
+					$row_class = 'even';
+				} else {
+					$row_class = 'odd';
+				}
+		?>
+			<tr class="<?php echo $row_class; ?>">
+				<td>
+					<?php echo $album['spins']; ?>
+				</td>
+				<td><a href="/music/editAlbum/id/<?php echo $album['album_id']; ?>/"><?php echo $album['album_id']; ?></a></td>
+				<td>
+					<strong><?php echo $album['artist_name']; ?></strong>
+				</td>
+				<td>
+					<strong><?php echo $album['album_name']; ?></strong>
+				</td>
+				<td>
+					<?php echo $album['label_name']; ?>
+				</td>
+				
+			</tr>
+		<?php } //endfor?>
+		</table>
+	</div>
+	<h3><?php echo STATION_NAME ?> Chart Formatted Output</h3>
+	<i>The following list is in the same order as the table above.</i>
+	<br /><br />
+	<?php
+	foreach ($this->the_spins as $album){ 
+		echo $album['artist_name'] . ' -  "' . $album['album_name'] . '" (' . $album['label_name'] . ")<br />\n\n";
+	}
+	
+	?>
+</div><!-- left -->
+<?php echo $this->render('music/menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

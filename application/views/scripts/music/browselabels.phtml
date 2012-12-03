@@ -1,0 +1,57 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+				<h1><?php echo $this->title;?></h1>
+                
+		        <div id="tabs">
+		            <ul>
+		                <li style="margin-left: 1px" id="tabHeader1"><a href="/music/addLabel"><span>Add Label</span></a></li>
+		                <li id="tabHeader2"><a href="/music/editLabel"><span>Edit Label</span></a></li>
+						<li id="tabHeader3"><a href="/music/browseLabels"><span>Browse Labels</span></a></li>
+		            </ul>
+		        </div><!--End of tabs-->
+		        <div id="tabscontent">
+		            <div id="tabContent1" class="tabContent" style="display: none;"></div>
+					<div id="tabContent2" class="tabContent" style="display: none;"></div>
+					<div id="tabContent3" class="tabContent" style="display: none;">
+						<div id="label_browse_list">
+							<?php echo $this->render('music/form_browselabels.phtml'); ?>
+							<?php if($this->the_labels): ?>
+								<table id="browseLabels" border="0" cellspacing="0">
+								<?php 
+									 $label_count = 0;
+									 foreach ($this->the_labels as $label){ 
+									 	$label_count++;
+										if($label_count % 2 == 0){
+											$row_class = 'even';
+										} else {
+											$row_class = 'odd';
+										}
+								?>
+									<tr class="<?php echo $row_class; ?>">
+								<?php if ($label['label_website'] != '' || $label['label_email'] != '') :?>
+										<td>
+											<strong><?php echo $label['label_name']; ?></strong><br />
+											&nbsp;&nbsp;&nbsp;<?php echo '<a href="'.$label['label_website'].'">'.$label['label_website'].'</a>';?>
+											&nbsp;&nbsp;&nbsp;<?php echo '<a href="mailto:'.$label['label_email'].'">'.$label['label_email'].'</a>';?>
+										</td>
+								<?php else: ?>
+										<td>
+											<strong><?php echo $label['label_name']; ?></strong>
+										</td>
+								<?php endif; ?>
+										<td width="10">[<a href="/music/editLabel/id/<?php echo $label['id']; ?>">edit</a>]</td>
+									</tr>
+								<?php } //endfor?>
+								</table>
+							<?php endif; ?>
+						</div>
+					</div>
+
+		        </div><!--End of tabscontent-->
+</div><!-- left -->
+<script type="text/javascript">
+    /*show third tab*/
+    toggleTab(3,3);
+</script>
+<?php echo $this->render('music/menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

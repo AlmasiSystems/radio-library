@@ -1,0 +1,26 @@
+Radio Library
+=============
+Version 0.8
+
+Radio Library is a LAMP (Linux, Apache, MySQL, PHP) application designed to manage a physical music collection, radio show playlists, and other features needed by radio stations. It was originally developed for KDVS 90.3fm in Davis, California and open sourced in December 2012.
+
+Notes
+-----
+The initial release is marked as "version 0.8" as the application is very feature complete but may still be rooted in the needs of KDVS - efforts need to be made to modernize and genericize the application.
+
+Licensing
+---------
+This application is available under the MIT license.
+
+Please contribute patches and report issues at https://github.com/KDVS/radio-library/issues.
+
+Installation
+------------
+This application has been tested under CentOS 5.8 with PHP 5.1 and MySQL 5.0.
+
+Standard LAMP installation should be applied. Copy the application into a directory such as /var/www/html/ and configure Apache to AllowOverride (or move the contents of every .htaccess into your Apache config).
+
+You will need to manual initialize the database with the scripts included in db/.
+
+- Christopher Thielen (cthielen at gmail com)
+

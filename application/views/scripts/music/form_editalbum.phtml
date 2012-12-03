@@ -1,0 +1,80 @@
+<div>	
+<div class="excerpt">
+	Begin typing the Artist Name or Title of the Album you wish to edit <b>(minimum 3 characters)</b>
+</div>
+<div id="searchAlbumForm">
+	<form onsubmit="return false;">
+		<fieldset>
+
+			<legend>Edit Album</legend>
+			<ol>
+				<li><label for="album_autocomplete" class="element">Magic Search</label>
+					<div class="element">
+						<input type="text" id="album_autocomplete" name="autocomplete_parameter"/>
+						<span id="album_autocomplete_indicator" style="display: none"><img src="/public/images/loading_small.gif" alt="Loading..." /></span>
+					</div>
+					<div id="album_autocomplete_choices" class="autocomplete"></div>
+				</li>
+			</ol>
+		</fieldset>
+	</form>
+</div>
+<br /><br />
+
+<div id="hidden_form" style="display: none">
+
+	<div id="loading_editAlbumForm" style="text-align: center; display: none;"><img src="/public/images/loading.gif" /></div>
+	<div id="editAlbumForm"></div>
+</div>
+</div>
+<script type="text/javascript" language="javascript">
+	function submitEditAlbumForm(form_element){
+		
+	    new Ajax.Updater('editAlbumForm', '/ajax/albumEditForm', {
+							asynchronous:true,
+							evalScripts:true,
+							onLoading: function(){ $('editAlbumForm').update('<div class="loading"></div>'); },
+							onComplete:function(){ makeLabelAutoCompleter();},
+							parameters:Form.serialize(form_element)
+							});
+		return false;
+	}
+
+	/*makes the input element an autocompleter*/
+	
+	new Ajax.Autocompleter("album_autocomplete", "album_autocomplete_choices", "/ajax/autoCompleteAlbums", {
+	                        paramName: "search_term",
+	                        minChars: 3,
+	                        indicator: 'album_autocomplete_indicator', 
+	                        afterUpdateElement: updateEditAlbumForm
+	                        });
+	/*makes the label autocommpletr*/
+	function makeLabelAutoCompleter(){
+		new Ajax.Autocompleter("label_autocomplete", "label_autocomplete_choices", "/ajax/autoCompleteLabels", {
+		                        paramName: "search_term",
+		                        minChars: 2,
+		                        indicator: 'label_autocomplete_indicator', 
+		                      	updateElement: function(li){$('label_id').value = li.id; $('label_selected').value = li.title; $('label_autocomplete').value = '';}
+		                        });	
+	}
+	/*grabs the form on user selection */
+	function updateEditAlbumForm(element, li){
+		getEditAlbumForm(li.id);
+	}
+	function getEditAlbumForm(album_id){
+		if ($('hidden_form').style.display == 'none'){
+			new Effect.SlideDown('hidden_form', {duration: 0.3});
+		}
+	    new Ajax.Updater('editAlbumForm', '/ajax/albumEditForm', {
+							onComplete:function(){ new Effect.Highlight('editAlbumForm'); makeLabelAutoCompleter();},
+							onLoading: function(){ $('editAlbumForm').update('<div class="loading"></div>'); },
+	                        asynchronous:true,
+	                        parameters: {album_id: album_id}
+	                        });
+	}
+	
+	/*used to autograb album to edit if referred from another page*/
+	<?php if (isset($this->album_id)): ?>
+		getEditAlbumForm(<?php echo $this->album_id; ?>);
+	<?php endif; ?>
+</script>

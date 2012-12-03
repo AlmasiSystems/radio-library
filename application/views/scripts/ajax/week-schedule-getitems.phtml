@@ -1,0 +1,79 @@
+<?php
+
+function dateEncoder($time, $dotw, $is_start){
+	$dotw = (int)$dotw;
+	$date = "";
+	switch($dotw){
+
+		case 0:
+			$date = "2006-02-13";
+			break;
+		case 1:
+			$date = "2006-02-14";
+			break;
+		case 2:
+			$date = "2006-02-15";
+			break;
+		case 3:
+			$date = "2006-02-16";
+			break;
+		case 4:
+			$date = "2006-02-17";
+			break;
+		case 5:
+			$date = "2006-02-18";
+			break;
+		case 6:
+			$date = "2006-02-19";
+			break;	
+	}
+	if($time == '00:00:00' || $time == '00:30:00' || $time == '01:00:00' || $time == '01:30:00' ){
+		$date = date("Y-m-d", strtotime($date . "+1 day"));
+	} else if (($time == '02:00:00' || $time == '03:00:00') && !$is_start){
+		$date = date("Y-m-d", strtotime($date . "+1 day"));
+	}
+	if($time == '24:00:00'){
+		$time = '23:59:00';
+	}
+	
+	return gmdate('D, d M Y H:i',strtotime($date . ' ' . $time . ' GMT')); 
+}
+
+function colorEncoder($show_type){
+	switch($show_type){
+		default:
+			return '#FFFFFF';
+	}
+}
+
+/*echo '<?phpxml version="1.0" ?>';*/
+
+
+foreach($this->the_events as $event){
+	//var_dump($event);
+	$the_desc = "";
+	?>
+	<item>
+		<id><?php echo $event["id"]; ?></id>
+		<showID><?php if(isset($event["show_id"])){ echo $event["show_id"];} ?></showID>
+		<altShowID><?php if(isset($event["alt_show_id"])){ echo $event["alt_show_id"];} ?></altShowID>
+		<description><?php echo $this->CreateEventDescription($event); ?></description>
+		<eventStartDate><?php echo dateEncoder($event['start_time'], $event['dotw'], true). ''; ?></eventStartDate>
+		<eventEndDate><?php echo dateEncoder($event['end_time'], $event['dotw'], false). ''; ?></eventEndDate>
+		<bgColorCode><?php if(isset($event["show_type"])){echo colorEncoder($event['show_type']);} else { echo colorEncoder('');} ?></bgColorCode>
+	</item>
+	<?php
+	
+}
+/*
+<item>
+	<id>1</id>
+	<showID>69</showID>
+	<altShowID>70</altShowID>
+	<description>Lunch</description>
+	<eventStartDate>Mon, 13 Feb 2006 01:30 GMT</eventStartDate>
+	<eventEndDate>Mon, 13 Feb 2006 03:00 GMT</eventEndDate>
+	<bgColorCode>#FFFFFF</bgColorCode>
+</item>
+*/
+?>

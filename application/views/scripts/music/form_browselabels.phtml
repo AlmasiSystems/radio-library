@@ -1,0 +1,31 @@
+<div id="selectLetter">
+	<form action="">
+		<fieldset>
+			<legend>Show Labels Starting With:</legend>
+			<h1>
+				<?php
+				if ($this->the_letter == 'sym'){
+					echo '[sym]&nbsp;';
+				} else {
+					echo '[<a href="/music/browseLabels/letter/sym">sym</a>]&nbsp;';
+				}
+				for ($i=65; $i <= 90; $i++) {
+					$x = chr($i);
+					if($x == $this->the_letter){
+						echo $x.'&nbsp;';
+					} else {
+						echo '<a href="/music/browseLabels/letter/'.$x.'">'.$x.'</a>&nbsp;';
+					}
+				}
+				
+				if ($this->the_letter == 'all'){
+					echo '[all]';
+				} else {
+					echo '[<a href="/music/browseLabels/letter/all">all</a>]';
+				}
+				?>
+			</h1>
+		</fieldset>
+	</form>
+</div>
+<div id="browseLabelsForm"><?php echo $this->the_form; ?></div>

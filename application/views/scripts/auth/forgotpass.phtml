@@ -1,0 +1,13 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+		<h1>Forgot Your Password? You Silly Goose...</h1>
+		<?php if ($this->the_message) : ?>
+            <div class="message"><?php echo $this->the_message; ?></div>
+        <?php else: ?>
+        <div class="exerpt">Please provide your login username so that your magic code can be emailed to you.</div>
+        <div id="resetPassForm"><?php echo $this->the_form; ?></div>	
+        <?php endif; ?>
+        
+		
+</div><!-- left -->
+<?php echo $this->render('footer.phtml'); ?>

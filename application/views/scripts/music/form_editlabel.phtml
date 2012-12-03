@@ -1,0 +1,76 @@
+<div>	
+<div class="excerpt">
+	Begin typing the Name, Website or Email of the Label you wish to edit <b>(minimum 2 characters)</b>
+</div>
+<div id="searchLabelForm">
+	<form onsubmit="return false;" action="">
+		<fieldset>
+
+			<legend>Find Label</legend>
+			<ol>
+				<li><label for="label_autocomplete" class="element">Magic Search</label>
+					<div class="element">
+						<input type="text" id="label_autocomplete" name="autocomplete_parameter"/>
+						<span id="label_autocomplete_indicator" style="display: none"><img src="/public/images/loading_small.gif" alt="Loading..." /></span>
+					</div>
+					<div id="label_autocomplete_choices" class="autocomplete"></div>
+				</li>
+			</ol>
+		</fieldset>
+	</form>
+</div>
+<br /><br />
+
+<div id="hidden_form" style="display: none">
+
+	<div id="loading_editLabelForm" style="text-align: center; display: none;"><img src="/public/images/loading.gif" /></div>
+	<div id="editLabelForm"></div>
+</div>
+</div>
+<script type="text/javascript" language="javascript">
+	function submitEditLabelForm(form_element){
+		
+	    new Ajax.Updater('editLabelForm', '/ajax/labelEditForm', {
+							asynchronous:true,
+							evalScripts:true,
+							onLoading: function(){ $('editLabelForm').update('<div class="loading"></div>'); },
+							parameters:{
+								id: $('id').value,
+								label_name: $('label_name').value, 
+								label_website: $('label_website').value, 
+								label_email: $('label_email').value
+								}
+							});
+		return false;
+	}
+
+	/*makes the input element an autocompleter*/
+	
+	new Ajax.Autocompleter("label_autocomplete", "label_autocomplete_choices", "/ajax/autoCompleteLabels", {
+	                        paramName: "search_term",
+	                        minChars: 2,
+	                        indicator: 'label_autocomplete_indicator', 
+	                        afterUpdateElement: updateEditLabelForm
+	                        });
+
+	/*grabs the form on user selection */
+	function updateEditLabelForm(element, li){
+		getEditLabelForm(li.id);
+	}
+	function getEditLabelForm(label_id){
+		if ($('hidden_form').style.display == 'none'){
+			new Effect.SlideDown('hidden_form', {duration: 0.3});
+		}
+	    new Ajax.Updater('editLabelForm', '/ajax/labelEditForm', {
+							onComplete:function(){ new Effect.Highlight('editLabelForm');},
+							onLoading: function(){ $('editLabelForm').update('<div class="loading"></div>'); },
+	                        asynchronous:true,
+	                        parameters: {label_id: label_id}
+	                        });
+	}
+	
+	/*used to autograb album to edit if referred from another page*/
+	<?php if (isset($this->label_id)): ?>
+		getEditLabelForm(<?php echo $this->label_id; ?>);
+	<?php endif; ?>
+</script>

@@ -1,0 +1,532 @@
+<?php echo $this->render('header.phtml'); ?>
+<style>
+	div#articles, div#header, div#footer{
+		width: 1000px
+	}
+	div#links,  div#additional {
+		width: 990px;
+	}
+	
+	div#playlist_tracks {
+		border: 1px solid #CCCCCC;
+		margin: 30px 5px;
+		padding: 0px 0px 10px 0px;
+		background-color: #EFEFEF;
+	}
+	div.section,div#createNew {
+		/*
+		border: 1px solid #CCCCCC;
+		margin: 30px 5px;
+		padding: 0px 0px 10px 0px;
+		background-color: #EFEFEF;
+		*/
+	}
+	div.loading, div.saving {
+	    margin: 0;
+	    padding: 0;
+	}
+	div#createNew input { margin-left: 5px; }
+
+	div#createNew h3, div.section h3{
+		font-size: 14px;
+		padding: 2px 5px;
+		margin: 0 0 0 0;
+		background-color: #3C6491;
+		color: #fff;
+		display: block;
+	}
+	div.section h3 a{
+		color: #000;
+	}
+	div.lineitem {
+      margin:0;
+      margin-bottom:4px;
+      padding:2px;
+      border:1px solid #888;
+     /* cursor:move; */
+	}
+	span.handle {
+		cursor:move;
+		background-color: #ccc;
+		
+	}
+	h1 {
+		margin-bottom: 0;
+		font-size: 18px;
+	}
+	input {
+		font-size: 10pt;
+	}
+	
+	span #album_id {
+	    left: 10px;
+    }
+	span #track_num {
+	    left: 10px;
+    }
+    span #artist {
+	    left: 10px;
+    }
+    span #song {
+	    left: 10px;
+    }
+    span #album {
+	    left: 10px;
+    }
+    span #label {
+	    left: 10px;
+    }
+    span #comments {
+	    left: 10px;
+    }
+    span #air {
+	    left: 10px;
+    }
+    span #request {
+	    left: 10px;
+    }
+    span #from_home {
+	    left: 10px;
+    }
+
+</style>
+	<div style="float: right; text-align: center; width: 420px; height: 70px;">
+		<input type="button" onClick="createNewTracks(1);" value="Add 1 Empty Track">&nbsp; &nbsp;
+		<input type="button" onClick="createNewTracks(5);" value="Add 5 Empty Tracks">&nbsp; &nbsp;<br /><br />
+		<input type="button" onClick="saveAll()" value="Save All"><br /><br />
+		<div id="track_messages_top"></div>
+	</div>
+	<h1>Playlist Manipulator</h1>
+	<h3><?php echo $this->show_name; ?>&nbsp;&nbsp;<?php echo date('h:ia', strtotime($this->the_playlist['start_time'])) . ' - ' . date('h:ia', strtotime($this->the_playlist['end_time'])); ?>	[<a href="/playlists/">Change Show</a>]</h3>
+	<h3><?php echo $this->date_formatted; ?>&nbsp;&nbsp;[<a href="/playlists/manage/event_id/<?php echo $this->the_playlist['event_id']; ?>/switch/1/">Change Date</a>]&nbsp;&nbsp;</h3>
+	<h3>[<a href="/playlists/manage/event_id/<?php echo $this->the_playlist['event_id']; ?>/date/<?php echo $this->the_playlist['date']; ?>/">Edit Playlist Comments/Show Details</a>]</h3>
+		<div id="page" style="width: 1000px">
+			<div id="playlist_tracks">
+				<table width="99%" style="text-align: left">
+					<tr>
+						<td width="10%">&nbsp;</td>
+						<td width="6%">Album ID</td>
+						<td width="5%">Track<br />Num</td>
+						<td width="15%">Artist</td>
+						<td width="15%">Song</td>
+						<td width="15%">Album</td>
+						<td width="15%">Label</td>
+						<td width="7%">Comments</td>
+						<td width="3%">Air Break After</td>
+						<td width="2%">Re- quest</td>
+						<td width="3%">From Home</td>
+						<td width="5%">&nbsp;</td>
+					<!--	<td width="95%">
+                            
+							<span class="handle">drag</span>
+							<input type="button" name="blank" value="save"  disabled="disabled"/>
+							<input type="text" name="album_id" value="AlbumID" size="7" disabled="disabled" />
+							<input type="text" name="track_num" value="Tr#" size="2" disabled="disabled" />
+							<input type="text" name="artist_name" value="Artist" size="18" disabled="disabled" />
+							<input type="text" name="song_name" value="Song" size="15" disabled="disabled" />
+							<input type="text" name="album_name" value="Album" size="15" disabled="disabled" />
+							<input type="text" name="label_name" value="Label" size="15" disabled="disabled" />
+							<input type="text" name="comments" value="Comments" size="15" disabled="disabled" />
+						</td>
+						<td>
+						    <center>Air Break After</center>
+						</td>
+						<td>
+						    <center>Re quest</center>
+					    </td>
+					    <td>
+					        <center>From Home</center>
+					    </td>-->
+
+					</tr>
+					
+				</table>
+				<div id="group1" class="section">
+
+				<?php 
+				 	$track_id = 0;
+					if ($this->the_tracks): 					 	
+						foreach($this->the_tracks as $trk): 
+							$track_id++;
+					?>
+						<div id="item_<?php echo $track_id; ?>" class="lineitem">
+							<form id="tracks_form_<?php echo $track_id; ?>" class="track_form" onsubmit="updateTrack(<?php echo $track_id; ?>); return(false);">
+								
+								<input type="hidden" name="id" value="<?php echo $trk['id']; ?>" />	
+								
+								<input type="hidden" name="playlist_id" value="<?php echo $trk['playlist_id']; ?>" />
+								<input type="hidden" name="track_id" value="<?php echo $track_id; ?>" />
+								<input type="hidden" name="position" value="<?php echo $trk['position']; ?>" />
+								<span class="handle">drag</span>
+								<input type="submit" name="submit" value="save" />
+								<input type="text" name="album_id" value="<?php if ($trk['album_id']){echo $trk['album_id'];} ?>" size="7" />
+								<input type="text" name="track_num" value="<?php if ($trk['track_num']){echo $trk['track_num'];} ?>" size="2" />
+								<input type="text" name="artist_name" value="<?php echo $trk['artist_name']; ?>" size="18" />
+								<input type="text" name="song_name" value="<?php echo $trk['song_name']; ?>" size="15" />
+								<input type="text" name="album_name" value="<?php echo $trk['album_name']; ?>" size="15" />
+								<input type="text" name="label_name" value="<?php echo $trk['label_name']; ?>" size="15" />
+								<input type="text" name="comments" value="<?php echo $trk['comments']; ?>" size="15" />
+								<input type="checkbox" name="airbreak_after" value="checked" <?php if ($trk['airbreak_after']){echo 'checked="checked"';} ?> />
+								<input type="checkbox" name="request" value="checked" <?php if ($trk['request']){echo 'checked="checked"';} ?> />
+								<input type="checkbox" name="from_home" value="checked" <?php if ($trk['from_home']){echo 'checked="checked"';} ?> />
+								
+								<input type="button" value="X" onclick="deleteTrack(<?php echo $track_id; ?>);" />
+						
+							</form>
+						</div>
+					<?php endforeach; ?>
+				<?php endif; ?>
+
+			</div>
+			<table width="99%" style="text-align: left">
+				<tr>
+					<td width="10%">&nbsp;</td>
+					<td width="6%">Album ID</td>
+					<td width="5%">Track<br />Num</td>
+					<td width="15%">Artist</td>
+					<td width="15%">Song</td>
+					<td width="15%">Album</td>
+					<td width="15%">Label</td>
+					<td width="7%">Comments</td>
+					<td width="3%">Air Break After</td>
+					<td width="2%">Re- quest</td>
+					<td width="3%">From Home</td>
+					<td width="5%">&nbsp;</td>
+				<!--	<td width="95%">
+
+						<span class="handle">drag</span>
+						<input type="button" name="blank" value="save"  disabled="disabled"/>
+						<input type="text" name="album_id" value="AlbumID" size="7" disabled="disabled" />
+						<input type="text" name="track_num" value="Tr#" size="2" disabled="disabled" />
+						<input type="text" name="artist_name" value="Artist" size="18" disabled="disabled" />
+						<input type="text" name="song_name" value="Song" size="15" disabled="disabled" />
+						<input type="text" name="album_name" value="Album" size="15" disabled="disabled" />
+						<input type="text" name="label_name" value="Label" size="15" disabled="disabled" />
+						<input type="text" name="comments" value="Comments" size="15" disabled="disabled" />
+					</td>
+					<td>
+					    <center>Air Break After</center>
+					</td>
+					<td>
+					    <center>Re quest</center>
+				    </td>
+				    <td>
+				        <center>From Home</center>
+				    </td>
+                    -->
+				</tr>
+				
+			</table>
+		</div>
+		</div>
+		<div style="height: 70px;">
+			<div style="float: right; text-align: center; width: 400px; height: 50px;">
+				<div id="track_messages_bottom"></div>
+			</div>
+			<input type="button" onClick="createNewTracks(1);" value="Add 1 Empty Track">&nbsp; &nbsp;
+			<input type="button" onClick="createNewTracks(5);" value="Add 5 Empty Tracks">&nbsp; &nbsp;
+			<input type="button" onClick="saveAll()" value="Save All">
+
+		</div>
+		
+	</div>
+	
+
+
+<script type="text/javascript">
+
+sections = ['group1'];
+<?php
+	$items_list = '';
+	for($i = 1; $i <= $track_id; $i++){
+		$items_list .= "'item_$i',";
+	}
+	$items_list = substr($items_list, 0, -1);
+?>
+items = [<?php echo $items_list; ?>];
+
+function createNewTracks(tracks_num) {
+	for(var i = 0; i < tracks_num; i++) {
+		var track_id = (items.length + 1);
+		var newDiv = Builder.node('div', {id: 'item_' + track_id, className: 'lineitem', style: 'display:none;' }, [
+			Builder.node('form', {id: 'tracks_form_' + track_id, className: 'track_form', onsubmit: 'updateTrack(' + track_id + '); return(false);' }, [
+				Builder.node('span', {className: 'handle', style: 'width: 15px'}, ['drag']), ' ',
+				Builder.node('input', {name: 'id', type: 'hidden'}), 
+				Builder.node('input', {name: 'playlist_id', type: 'hidden', value: '<?php echo $this->playlist_id; ?>'}), 
+				Builder.node('input', {name: 'track_id', type: 'hidden', value: track_id}),
+				Builder.node('input', {name: 'position', type: 'hidden', value: track_id}),
+				Builder.node('input', {name: 'submit', type: 'submit', value: 'save'}), ' ',
+				Builder.node('input', {name: 'album_id', type: 'text', size: '7'}), ' ',	
+				Builder.node('input', {name: 'track_num', type: 'text', size: '2'}), ' ',
+				Builder.node('input', {name: 'artist_name', type: 'text', size: '18'}), ' ',
+				Builder.node('input', {name: 'song_name', type: 'text', size: '15'}), ' ',
+				Builder.node('input', {name: 'album_name', type: 'text', size: '15'}), ' ',
+				Builder.node('input', {name: 'label_name', type: 'text', size: '15'}), ' ',
+				Builder.node('input', {name: 'comments', type: 'text', size: '15'}), ' ',
+				Builder.node('input', {name: 'airbreak_after', type: 'checkbox', value: 'checked'}), ' ',
+				Builder.node('input', {name: 'request', type: 'checkbox', value: 'checked'}), ' ',
+				Builder.node('input', {name: 'from_home', type: 'checkbox', value: 'checked'}), ' ',
+				Builder.node('input', {type: 'button', value: 'X', onclick: 'deleteTrack(' + track_id + ');'})
+				
+			])
+		]);
+
+		items.push(newDiv.id);
+		$('group1').appendChild(newDiv);
+		Effect.Appear(newDiv.id);
+	}
+	destroyLineItemSortables();
+	createLineItemSortables();
+	createGroupSortable();
+	
+}
+
+function createLineItemSortables() {
+	for(var i = 0; i < sections.length; i++) {
+		Sortable.create(sections[i],{tag:'div',dropOnEmpty: true, containment: sections,only:'lineitem'});
+	}
+}
+
+function destroyLineItemSortables() {
+	for(var i = 0; i < sections.length; i++) {
+		Sortable.destroy(sections[i]);
+	}
+}
+function startLoading(){
+	$('track_messages_top').innerHTML = '<div class="loading"></div>';
+	$('track_messages_bottom').innerHTML = '<div class="loading"></div>';
+}
+function endLoading(){
+	$('track_messages_top').innerHTML = '';
+	$('track_messages_bottom').innerHTML = '';
+}
+function deleteTrack(track_num){
+
+	form = $('tracks_form_' + track_num);
+	form_hash = $H(Form.serialize(form, true));
+	json = form_hash.toJSON();
+	var url = '/ajax/deleteTrack/';
+	new Ajax.Request(url, {
+	  method: 'post',
+	  parameters: {json: json},
+	  onCreate: startLoading,
+	  onComplete: endLoading,
+	  onSuccess: function(transport) {
+		if(transport.responseText == 'OK'){
+			new Effect.Fade('item_' + track_num, {
+					duration: 0.3,
+					afterFinish: function(){
+						$('item_' + track_num).remove();
+						new Effect.Highlight('playlist_tracks');
+					}
+				});
+			
+		} //else, error out
+	  }
+	});
+
+	return false;
+}
+function disableTrackFields(track_num, disable_track_num){
+
+	
+	var form = $('tracks_form_' + track_num);
+	var album_id = form['album_id'];
+	var track_num = form['track_num'];
+	var artist = form['artist_name'];
+	var album = form['album_name'];
+	var label = form['label_name'];
+	$(album_id).disable();
+	$(artist).disable();
+	$(album).disable();
+	$(label).disable();	
+	if(disable_track_num){
+		$(track_num).disable();
+	}
+}
+function enableTrackFields(track_num){
+
+	
+	var form = $('tracks_form_' + track_num);
+	var album_id = form['album_id'];
+	var track_num = form['track_num'];
+	var artist = form['artist_name'];
+	var album = form['album_name'];
+	var label = form['label_name'];
+	$(album_id).enable();
+	$(artist).enable();
+	$(album).enable();
+	$(label).enable();	
+	$(track_num).enable();
+
+}
+function updateTrack(track_num){
+	
+	enableTrackFields(track_num);
+	form = $('tracks_form_' + track_num);
+	form_hash = $H(Form.serialize(form, true));
+	json = form_hash.toJSON();
+	var url = '/ajax/updateTrack/';
+	new Ajax.Request(url, {
+	  method: 'post',
+	  parameters: {json: json},
+	  onCreate: startLoading,
+	  onSuccess: function(transport) {
+		var data = transport.responseText.evalJSON();
+		updateTrackInfo(data);
+	  },
+	  onComplete: function(){
+		new Effect.Highlight('item_' + track_num);
+		endLoading();
+	  }
+	});
+	
+	return false;
+}
+function updateTrackInfo(data){
+	var track_id = data.track_id;
+	form = $('tracks_form_' + track_id);
+	var id = form['id'];
+	var position = form['position'];
+	var album_id = form['album_id'];
+	var track_num = form['track_num'];
+	var artist = form['artist_name'];
+	var song = form['song_name'];
+	var album = form['album_name'];
+	var label = form['label_name'];
+	var comments = form['comments'];
+	var request = form['request'];
+	var from_home = form['from_home'];
+	var airbreak_after = form['airbreak_after'];
+	
+	id.value = (data.id);
+	position.value = (data.position);
+	album_id.value = (data.album_id);
+	track_num.value = (data.track_num);
+	artist.value = (data.artist_name);
+	song.value = (data.song_name);
+	album.value = (data.album_name);
+	label.value = (data.label_name);
+	comments.value = (data.comments);
+	request.value = (data.request);
+	from_home.value = (data.from_home);
+	airbreak_after.value = (data.airbreak_after);
+	if(data.disable){
+		disableTrackFields(track_id, data.disable_track_num);
+		song.focus();
+	}
+}
+
+function createGroupSortable() {
+	Sortable.create('group1',{
+						tag:'div',
+						dropOnEmpty: true, 
+						containment: sections,
+						onUpdate: saveAll,
+						handle: 'handle',
+						only:'lineitem'
+						});
+	//Sortable.create('page',{tag:'div',only:'section',handle:'handle'});
+}
+
+function saveAll(){
+	track_forms = document.getElementsByClassName('track_form');
+	track_array = new Array();
+	the_json = '';
+	var x = 1;
+	track_forms.each(function(t_form){
+		t_form_hash = $H(Form.serialize(t_form, true));
+		enableTrackFields(t_form_hash['track_id']);
+		temp_form = $H(Form.serialize(t_form, true));
+		track_array[x++] = temp_form;
+	});
+
+	the_json = track_array.toJSON();
+	
+	
+	var url = '/ajax/updateAllTracks/';
+	new Ajax.Request(url, {
+	  method: 'post',
+	  parameters: {json: the_json},
+	  onCreate: startLoading,
+	  onComplete: endLoading,
+	  onSuccess: function(transport) {
+		var tracks = transport.responseText.evalJSON();
+		tracks.each(function(trk){
+			updateTrackInfo(trk);
+		});
+		new Effect.Highlight('playlist_tracks');
+	  }
+	});
+	
+}
+function updateTrackOrder(){
+	track_forms = document.getElementsByClassName('track_form');
+	track_array = new Array();
+	the_json = '';
+	var x = 1;
+	track_forms.each(function(t_form){
+		temp_form = $H(Form.serialize(t_form, true));
+		track_array[x++] = $H({id: temp_form['id'], track_id: temp_form['track_id'], playlist_id: <?php echo $this->playlist_id; ?>});
+	});
+
+	the_json = track_array.toJSON();
+	
+	var url = '/ajax/updateTrackOrder/';
+	new Ajax.Request(url, {
+	  method: 'post',
+	  parameters: {json: the_json},
+	  onCreate: startLoading,
+	  onComplete: endLoading,
+	  onSuccess: function(transport) {
+		if(transport.responseText == 'OK'){
+			new Effect.Highlight('playlist_tracks');
+		} //else errror out
+	  }
+	}); 
+}
+function getGroupOrder() {
+	var sections = document.getElementsByClassName('section');
+	//var alerttext = '';
+	var track_order = '';
+	var the_array = new Array();
+	sections.each(function(section) {
+		var sectionID = section.id;
+		//var order = $H(Sortable.serialize(sectionID, true));
+		track_order += Sortable.sequence(section) + '\n';
+	});
+
+}
+
+// <![CDATA[
+Sortable.create('group1',{
+					tag:'div',
+					dropOnEmpty: true, 
+					containment: sections,
+					onUpdate: saveAll,
+					handle: 'handle',
+					only:'lineitem'
+					});
+//Sortable.create('page',{tag:'div',only:'section',handle:'handle'});
+// ]]>
+
+if(items.length == 0){
+	createNewTracks(5);
+} else {
+	//disable track stuff that needs it
+	track_forms = document.getElementsByClassName('track_form');
+
+	track_forms.each(function(t_form){
+		form_array = $H(Form.serialize(t_form, true));
+		if(form_array['album_id'] != '' && form_array['track_num'] != ''){
+			disableTrackFields(form_array['track_id'], true);
+		} else if (form_array['album_id'] != ''){
+			disableTrackFields(form_array['track_id'], false);
+		}
+
+	});
+}
+
+</script>	
+	
+<?php echo $this->render('footer.phtml'); ?>

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="English" />
+	<meta name="Distribution" content="Global" />
+	<meta name="Author" content="Chris Thielen" />
+	<meta name="Robots" content="index,follow" />
+
+	<meta name="Description" content="Interface to the radio library system." />
+	<meta name="Keywords" content="kdvs,radio,library,digital management,playlists,blog" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl; ?>/public/styles/style.css" />
+	<title><?php echo STATION_NAME ?> Library</title>
+	
+	<script type="text/javascript" src="/public/scripts/prototype.js?49"></script>
+    <script type="text/javascript" src="/public/scripts/scriptaculous.js?49"></script>
+	<script type="text/javascript" src="/public/scripts/tabs.js?5"></script>
+	<script type="text/javascript" src="/public/scripts/scw.js?8"></script>
+</head>
+<body>
+	<div id="header">
+		<div id="logo">
+
+			<p class="slogan"><b>Online Media Database</b><br />For DJs, Staff, and Volunteers</p>
+			<div style="float: left;">
+				<h1><a href="#"><?php echo STATION_NAME ?> Library</a></h1>
+			</div>
+		</div>
+		<div id="hmenu">
+		<?php if(isset($this->user)) : ?>
+		    <?php echo $this->CreateMenu($this->user['controllers']); ?>
+        <?php else :?>
+	        <a href="/auth/login/">Login</a>
+        <?php endif; ?>
+		</div>
+	</div>
+		
+	<div class="content">
+		<div id="week_container">

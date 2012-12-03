@@ -1,0 +1,18 @@
+<div>
+		<?php if ($this->the_message) : ?>
+		    <div class="message"><?php echo $this->the_message; ?></div>
+		<?php endif; ?>
+		
+		<div id="<?php echo $this->form_id; ?>">
+			<?php echo $this->the_form; ?>
+		</div>
+
+		<?php if ($this->error) : ?>
+		
+		<script type="text/javascript" language="javascript">
+			new Effect.Shake('<?php echo $this->form_id; ?>');
+		</script>
+		
+		<?php endif; ?>
+		
+</div>

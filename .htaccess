@@ -1,0 +1,13 @@
+
+AddType application/x-httpd-php .php3 .php .html .phtml .sys .download .re .inc
+
+Options +FollowSymLinks
+
+RewriteEngine on
+
+#everythihng else gets redirected to Zend bootstrap
+RewriteRule .* index.php
+
+php_flag magic_quotes_gpc off
+php_flag register_globals off
+

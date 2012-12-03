@@ -1,0 +1,26 @@
+
+
+	<table id="browseShows" border="0" cellspacing="0">
+	<?php 
+		 $show_count = 0;
+		 foreach ($this->the_users as $user){ 
+		 	$show_count++;
+			if($show_count % 2 == 0){
+				$row_class = 'even';
+			} else {
+				$row_class = 'odd';
+			}
+	?>
+		<tr class="<?php echo $row_class; ?>">
+			<td>
+				<strong><?php echo $user['dj_name']; ?></strong><br />
+			</td>
+			<td>
+				<?php echo $user['name_first'] . " " . $user['name_last']; ?>
+			<td>
+			
+		</tr>
+	<?php } //endfor?>
+	</table>
+
+						

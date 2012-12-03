@@ -1,0 +1,19 @@
+<?php echo $this->render('schedule/schedule_header.phtml'); ?>
+
+	<?php if(isset($this->seasonselector) && $this->seasonselector): ?>
+		<div id="articles">
+			<div id="left">
+			<h1><?php echo $this->title;?></h1>
+			<?php echo $this->render('schedule/seasonselector.phtml'); ?>
+			</div>
+			<?php echo $this->render('menu.phtml'); ?>
+		</div>
+	<?php else: ?>
+		<h1><?php echo $this->title;?></h1>
+		<h2><?php echo $this->season_title;?></h2>
+		&nbsp;&nbsp;[<a href="/schedule/schedule">Change Season</a>]&nbsp;&nbsp;[<a href="/schedule/schedule/season_id/<?php echo $this->season_id;?>">Refresh</a>]<br /><br />
+		<?php echo $this->render('schedule/schedule_week.phtml'); ?>
+	<?php endif; ?>		
+
+
+<?php echo $this->render('schedule/schedule_footer.phtml'); ?>

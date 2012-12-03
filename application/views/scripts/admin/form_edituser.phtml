@@ -1,0 +1,75 @@
+<div>	
+<div class="excerpt">
+	Begin typing the name (username, real name, email, or dj name) of the user you wish to edit <b>(minimum 3 characters)</b>
+</div>
+<div id="searchUserForm">
+	<form onsubmit="return false;">
+		<fieldset>
+
+			<legend>Edit User</legend>
+			<ol>
+				<li><label for="autocomplete" class="element">Magic Search</label>
+					<div class="element">
+						<input type="text" id="autocomplete" name="autocomplete_parameter"/>
+						<span id="indicator" style="display: none"><img src="/public/images/loading_small.gif" alt="Loading..." /></span>
+					</div>
+					<div id="autocomplete_choices" class="autocomplete"></div>
+				</li>
+			</ol>
+		</fieldset>
+	</form>
+</div>
+<br /><br />
+
+<div id="hidden_form" style="display: none">
+	
+	<div class="excerpt">
+		<h3>Access Levels</h3>
+			<b>Admin</b><br />
+			&nbsp;&nbsp + Admin Section<br />
+			&nbsp;&nbsp + All Access of Adder<br />
+			<br />
+			<b>Adder</b><br />
+			&nbsp;&nbsp + Manage Music<br />
+            &nbsp;&nbsp + All Access of DJ<br />
+            <br />			
+			<b>DJ</b><br />
+			&nbsp;&nbsp + Manage Playlists<br />
+			<br />
+	</div>
+	<div id="loading_editUserForm" style="text-align: center; display: none;"><img src="/public/images/loading.gif" /></div>
+	<div id="editUserForm"></div>
+</div>
+</div>
+<script type="text/javascript" language="javascript">
+	function submitEditUserForm(form_element){
+		
+	    new Ajax.Updater('editUserForm', '/ajax/userEditForm', {
+							asynchronous:true,
+							evalScripts:true,
+							onLoading: function(){ $('editUserForm').update('<div class="loading"></div>'); },
+							parameters:Form.serialize(form_element)
+							});
+		return false;
+	}
+	/*makes the input element an autocompleter*/
+	new Ajax.Autocompleter("autocomplete", "autocomplete_choices", "/ajax/autoCompleteUserNames", {
+	                        paramName: "search_term",
+	                        minChars: 3,
+	                        indicator: 'indicator', 
+	                        afterUpdateElement: getEditForm
+	                        });
+	/*grabs the form on user selection*/
+	function getEditForm(element, li){
+		if ($('hidden_form').style.display == 'none'){
+			new Effect.SlideDown('hidden_form', {duration: 0.3});
+		}
+/*		$('editUserForm').update('<div class=\'loading\'></div>'); */
+	    new Ajax.Updater('editUserForm', '/ajax/userEditForm', {
+							onComplete:function(){ new Effect.Highlight('editUserForm');},
+							onLoading: function(){ $('editUserForm').update('<div class="loading"></div>'); },
+	                        asynchronous:true,
+	                        parameters: {user_id: li.id}
+	                        });
+	}
+</script>

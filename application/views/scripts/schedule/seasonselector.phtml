@@ -1,0 +1,11 @@
+<form action="">
+	<fieldset>
+		<legend>Select Season</legend>
+		<?php foreach($this->seasons as $season){ ?>
+		    <a href="/schedule/<?php echo $this->the_action; ?>/season_id/<?php echo $season['id']; ?>"><?php echo $season['title']; ?></a>
+			&nbsp;&nbsp;<?php echo date("m/d/Y", strtotime($season['start_date'])); ?> - 
+			<?php echo date("m/d/Y", strtotime($season['end_date'])); ?>
+			<br /><br />
+		<?php } ?>	
+	</fieldset>
+</form>

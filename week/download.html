@@ -1,0 +1,66 @@
+<h1>Download week planner</h1>
+<p class="article_links">
+	<a href="scripts/dhtmlgoodies-week-planner/dhtmlgoodies-week-planner.html" onclick="var scriptWin = window.open(this.href,'week_planner');scriptWin.focus();return false">Demo</a>  
+</p>
+<h2>Download script</h2>
+<p>You can download the entire script from this <a href="/scripts/dhtmlgoodies-week-planner/dhtmlgoodies-week-planner.zip">zip file</a>.</p>
+<h2>Configuration</h2>
+<h4>Files in package</h4>
+<ul>
+	<li>dhtmlgoodies-week-planner.html = Main HTML file</li>
+	<li>js/dhtmlgoodies-week-planner.js = Main JS file for the script</li>
+	<li>js/ajax.js = Ajax (Library from http://twilightuniverse.com/projects/sack)</li>
+	<li>week_schedule_getItems.php = File called by ajax. This file outputs events in XML format. These events will be shown automatically on your page.</li>
+	<li>week_schedule_save.php = File called by ajax when changes have been made to an event. This file will be called when an element is created(after
+	description has been added), moved
+	or resized. </li>
+</ul>
+<h4>XML format</h4>
+<p>The file week_schedule_getItems.php produces a list of events in the following XML format:</p>
+<p>
+<span class="inline_code">
+&lt;?xml version="1.0" ?><br>
+&lt;item><br>
+&nbsp;&nbsp;&lt;id>1&lt;/id><br>
+&nbsp;&nbsp;&lt;description>Lunch&lt;/description><br>
+&nbsp;&nbsp;&lt;eventStartDate>Mon, 13 Feb 2006 11:30 GMT&lt;/eventStartDate><br>
+&nbsp;&nbsp;&lt;eventEndDate>Mon, 13 Feb 2006 12:00 GMT&lt;/eventEndDate><br>
+&nbsp;&nbsp;&lt;bgColorCode>#FFFFFF&lt;/bgColorCode><br>
+&lt;/item><br>
+&lt;item><br>
+&nbsp;&nbsp;&lt;id>2&lt;/id><br>
+&nbsp;&nbsp;&lt;description>Working with my project which is quite exciting.&lt;/description><br>
+&nbsp;&nbsp;&lt;eventStartDate>Mon, 13 Feb 2006 12:00 GMT&lt;/eventStartDate><br>
+&nbsp;&nbsp;&lt;eventEndDate>Mon, 13 Feb 2006 14:30 GMT&lt;/eventEndDate><br>
+&nbsp;&nbsp;&lt;bgColorCode>#FFFF00&lt;/bgColorCode><br>
+&lt;/item>
+</span>
+<p>Tags:</p>
+<ul>
+	<li>item = parent element for each item</li>
+	<li>id = Unique id for each event</li>
+	<li>description = Textual description of the event</li>
+	<li>eventStartDate = Start of event</li>
+	<li>eventEndDate = End of event</li>
+</ul>
+<h4>Javascript variables</h4>
+<p>You have the following variables available:</p>
+<span class="inline_code">
+var headerDateFormat = 'd.m';	
+var instantSave = true;	
+var externalSourceFile_items = 'week_schedule_getItems.php';	
+var externalSourceFile_save = 'week_schedule_save.php';	
+
+
+var appointmentMarginSize = 5;	
+var initTopHour = 8;	
+var initMinutes = 15;	
+var snapToMinutes = 5;
+</p>
+<p>You will find these variables at the top of the dhtmlgoodies-week-planner.js file. There, you will also find a description of what these variables does.</p>
+<h4>PHP variable</h4>
+<p>At the top of the dhtmlgoodies-week-planner.html file you will see a PHP variable:</p>
+<p><span class="inline_code">
+&lt;? $rowHeight = 59; ?>
+</p>
+<p>This $rowHeight variable is used to set the height of each hour in the script. The actual height is 1 pixel more than this value since a 1 pixel border is added to it. </p>

@@ -1,0 +1,12 @@
+<?php echo $this->render('header.phtml'); ?>
+<div id="left">
+<h1>Login</h1>
+<?php if($this->flashmsg != '') : ?>
+<div id="flash_msg"><?php echo $this->flashmsg; ?></div>
+<?php endif; ?>
+<?php echo $this->the_form; ?>
+<br />
+Forgot your password? <a href="/auth/forgotpass/">Click Here!</a><br /><br />
+</div><!-- left -->
+<?php echo $this->render('auth/menu.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

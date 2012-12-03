@@ -1,0 +1,11 @@
+<?php if ($this->the_message) : ?>
+    <div class="message"><?php echo $this->the_message; ?></div>
+<?php else: ?>
+	<div class="excerpt">
+			<b>Change Password</b><br />
+			Use the page to update your password.  
+			<br />
+
+	</div>
+<div id="changePassForm"><?php echo $this->the_form; ?></div>	
+<?php endif; ?>

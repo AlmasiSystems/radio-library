@@ -1,0 +1,144 @@
+<?php echo $this->render('header.phtml'); ?>
+<h1><?php echo $this->header_text; ?></h1>
+<?php 
+		$browser = FALSE;
+		if(preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) $browser = "Windows";
+		if(preg_match("/Mac/", $_SERVER['HTTP_USER_AGENT'])) $browser = "Mac";
+		if($browser == "Windows")
+		{
+		} else if ($browser == "Mac")  {
+		echo '<script type="text/javascript" src="/public/scripts/dymo_mac.js"></script>';
+		} else {
+		echo 'oops';
+	} ?>
+<?php if($this->results): ?>
+	
+	<div id="advanced_search_list">
+			<table id="search_results_list" border="0" cellspacing="0">
+				<tr class="even">
+					<th rowspan="2" valign="top">Album ID</th>
+					<th rowspan="2" valign="top">
+						&nbsp;
+					</th>
+					<th>
+						<strong>Artist<strong>
+					</th>
+					<th>
+						Album Title					
+					</th>
+					<th>
+						<strong>Label</strong>
+
+					</th>
+					<th>Add Date</th>
+					<th rowspan="2" valign="top">
+						Track?
+					</th>
+					<th rowspan="2" valign="top">
+						Adder
+					</th>
+					<th rowspan="2" valign="top">
+						&nbsp;
+					</th>
+
+				</tr>
+				<tr class="even">
+					<th colspan="4" style="text-align: left;">
+						Format - Genre - Promoter
+					</th>
+				</tr>
+			<?php 
+				 $count = 0;
+				 foreach ($this->results as $item){ 
+				 	$count++;
+					if($count % 2 == 0){
+						$row_class = 'even';
+					} else {
+						$row_class = 'odd';
+					}
+			?>
+
+				<tr class="<?php echo $row_class; ?>">
+					<td rowspan="2" valign="top">
+						<?php echo $item['id']; ?>
+
+						<br />
+					</td>
+
+					<td rowspan="1" valign="top">
+						[<a href="/music/editAlbum/id/<?php echo $item['id']; ?>/">edit</a>]
+					</td>
+
+						
+					<td valign="top">
+						<strong><?php echo $item['artist']; ?></strong>
+					</td>
+					<td valign="top">
+						<?php echo $item['title']; ?>
+					</td>
+					<td valign="top">
+						<strong><?php echo $item['label_name']; ?></strong>
+					</td>
+					<td rowspan="2" valign="top"><?php echo date('m/d/Y h:ia', strtotime($item['add_datetime'])); ?></td>
+					<td rowspan="2" valign="top">
+						<?php if(isset($item['track_con']) && $item['track_con']){ echo 'Yes';} else { echo 'No';} ?>
+					</td>
+					<td rowspan="2" valign="top">
+						<?php echo $item['adders']; ?>
+					</td>
+					<td rowspan="2" valign="top">
+						<?php 
+						if($browser == "Windows")
+						{
+						echo $this->CreateLabelPrintButtons_Win($item); 
+						} else if ($browser == "Mac")  {
+						echo $this->CreateLabelPrintButtons($item); 
+						}
+						
+						
+						?>
+					</td>
+				</tr>
+				<tr class="<?php echo $row_class; ?>">
+				    <td colspan="1" style="text-align: left;">
+							[<a href="javascript:deleteMe(<?php echo $item['id']; ?>, '<?php echo $item['artist']; ?> - <?php echo $item['title']; ?>')">delete</a>]
+					</td>
+					<td colspan="3" style="text-align: left;">
+						<?php echo $item['format'] . ' - ' . $item['genre']; ?>
+						<?php if(isset($item['promoter']) && $item['promoter'] != ''){ echo  ' - <strong>' . $item['promoter'] . '</strong>';} ?>
+					</td>
+				</tr>
+			<?php } //endfor?>
+			</table>
+			<?php if ($count >= 1000): ?>				
+				<div style="text-align: center; padding: 5px;"><strong>More than 1000 albums found so results have been truncated</strong></div>
+			
+			<?php endif; ?>
+	</div>
+<?php endif; ?>
+<script type="text/javascript" language="javascript">
+                  
+	function deleteMe(id, title){
+
+        	var answer = confirm("Are you SURE you want to delete:\n " + title + " ?\n Make SURE!");
+        	if (answer){
+        	    var answer = confirm("Are you SUPER SURE?!?! There is no going back!");
+        	    if (answer){
+                  	var url = '/ajax/deleteAlbum/';
+                	new Ajax.Request(url, {
+                	  method: 'post',
+                	  parameters: {album_id: id},
+                	  onSuccess: function(transport) {
+                		if(transport.responseText == 'OK'){
+                		    alert(title + " DELETED!!");
+                			window.location.replace( window.location.pathname );
+                		} //else errror out
+                	  }
+            	    });
+            	}
+        	}
+
+    }
+
+</script>
+<?php echo $this->render('footer.phtml'); ?>

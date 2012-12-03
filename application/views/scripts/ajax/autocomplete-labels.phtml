@@ -1,0 +1,17 @@
+<ul><?php
+	$print_truncate = false;
+	$count = 0;
+ 	foreach($this->labels as $label): 
+		$count++;
+		if($count > 10){
+			$print_truncate = true;
+			break;
+		}
+			
+	?>
+  <li id="<?php echo $label['id']; ?>" title="<?php echo $label['label_name']; ?>"><b><?php echo $label['label_name']; ?></b><br /><span class="informal"><?php echo $label['label_email']; ?><br /><?php echo $label['label_website']; ?></span></li>  
+<?php endforeach; ?>
+</ul>
+<?php if($print_truncate): ?>
+<strong>More than 10 Results found...</strong>
+<?php endif; ?>

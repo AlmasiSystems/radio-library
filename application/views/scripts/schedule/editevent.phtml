@@ -1,0 +1,25 @@
+<?php if ($this->event_saved): ?>
+<script type="text/javascript">
+	self.close();
+</script>
+<?php exit; endif; ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Edit Show Spot</title>
+<link rel="stylesheet" type="text/css" href="/public/styles/style.css" />
+<script type="text/javascript">
+	function processEventForm(){
+		if(window.opener){
+			var id = <?php echo $_GET['id']; ?>;
+			opener.setElement_txt(id,'Show Saved...<br /><a href="">Refresh</a> to show details');	// Calling function in week planner - update content
+			return true;
+		}
+		return false;
+	}
+</script>
+</head>
+<body>
+<?php echo $this->the_form; ?>
+</body>
+</html>

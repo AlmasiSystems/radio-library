@@ -1,0 +1,58 @@
+<?php echo $this->render('header.phtml'); ?>
+
+	<h1><?php echo $this->title; ?></h1>
+
+	<div class="mini_playlist_list">
+		<table cellpadding="2" width="100%">
+			
+		<?php
+		 	$week_no = 0;
+			foreach($this->the_playlists as $playlist):
+				$week_no++;
+		
+				if ($week_no % 2 == 0){
+					$tr_class = 'even';
+				} else {
+					$tr_class = 'odd';
+				}
+
+		 ?>
+			<tr class="<?php echo $tr_class; ?>" valign="top">
+				<td>
+					<?php echo date("D m/d/Y", strtotime($playlist['date'])); ?>
+				</td>
+				<td>
+					<?php echo date("g:ia", strtotime($playlist['start_time'])); ?><br />
+					<?php echo date("g:ia", strtotime($playlist['end_time'])); ?>
+				</td>
+				<td>
+					<?php echo $playlist['dj_names']; ?>
+				</td>
+				<td>
+						<a href="/shows/view/show_id/<?php echo $playlist['show_id']; ?>/date/<?php echo $playlist['date']; ?>/">
+						<?php echo $playlist['show_name']; ?>
+						</a>
+				</td>
+				<td>
+					<table width="100%">
+						<tr>
+							<td>
+								<?php echo $playlist['comments']; ?><br /><br />
+								[<a href="/shows/view/show_id/<?php echo $playlist['show_id']; ?>/date/<?php echo $playlist['date']; ?>/">View Playlist</a>]
+							</td>
+							
+						<?php if (isset($playlist['image_link'])): ?>
+							<td width="200">
+									<?php echo $playlist['image_link'];  ?>
+							</td>		
+						<?php endif; ?>
+							
+						</tr>
+					</table>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+		</table>
+	</div>
+
+<?php echo $this->render('footer.phtml'); ?>

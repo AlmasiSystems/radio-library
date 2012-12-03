@@ -1,0 +1,11 @@
+<?php
+$artist = $this->artist;
+
+require_once 'Zend/Service/Amazon.php';
+$amazon = new Zend_Service_Amazon('0RKH4ZH1JCFZHMND91G2');
+$results = $amazon->itemSearch(array('SearchIndex' => 'Music', 'Keywords' => 'LCD Soundsystem', 'ResponseGroup' => 'Tracks'));
+foreach ($results as $result) {
+   // var_dump($result);
+}
+$item = $amazon->itemLookup('B0006U4UAU', array('ResponseGroup' => 'Tracks'));
+var_dump($item);
